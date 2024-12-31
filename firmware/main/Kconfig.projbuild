@@ -13,3 +13,19 @@ menu "Wi-Fi Configuration"
             WiFi password (WPA or WPA2) for the example to use.
 
 endmenu
+
+menu "MQTT Configuration"
+
+    config BROKER_DOMAIN
+        string "Broker domain"
+        default "mqtt.eclipseprojects.io"
+        help
+            Domain of the broker to connect to
+
+    config BROKER_PORT
+        int "Broker domain"
+        default 1883
+        help
+            Port of the broker to connect to
+
+endmenu
