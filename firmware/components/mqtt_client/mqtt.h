@@ -74,6 +74,6 @@ class Mqtt {
 
   esp_mqtt_client_handle_t client_;
   bool connected_ = false;
-  std::unordered_map<std::string_view, std::deque<std::string>> messages_;
+  std::unordered_map<std::string, std::deque<std::string>> messages_;
 };
-}  // namespace mqtt
+}  // namespace mqtt_client

@@ -34,11 +34,11 @@ void mqtt_client::Mqtt::Disconnect() noexcept {
 }
 
 std::vector<std::string> mqtt_client::Mqtt::PopMessages(const std::string_view topic) noexcept {
-  if (messages_.find(topic) == messages_.end()) {
+  if (messages_.find(std::string{topic}) == messages_.end()) {
     return {};
   }
-  auto messages = messages_[topic];
-  messages_.erase(topic);
+  auto messages = messages_[std::string{topic}];
+  messages_.erase(std::string{topic});
   return {messages.begin(), messages.end()};
 }
 
@@ -54,10 +54,6 @@ void mqtt_client::Mqtt::OnEvent(void* arg, esp_event_base_t event_base, int32_t 
       static_cast<Mqtt*>(arg)->connected_ = false;
       break;
     case MQTT_EVENT_SUBSCRIBED: {
-      std::string topic(event->topic, event->topic_len);
-      if (static_cast<Mqtt*>(arg)->messages_.find(topic) == static_cast<Mqtt*>(arg)->messages_.end()) {
-        static_cast<Mqtt*>(arg)->messages_.emplace(topic, std::deque<std::string>{});
-      }
       break;
     }
     case MQTT_EVENT_UNSUBSCRIBED: {
@@ -70,7 +66,9 @@ void mqtt_client::Mqtt::OnEvent(void* arg, esp_event_base_t event_base, int32_t 
     case MQTT_EVENT_DATA: {
       std::string topic(event->topic, event->topic_len);
       std::string message(event->data, event->data_len);
-      if (static_cast<Mqtt*>(arg)->messages_.find(topic) != static_cast<Mqtt*>(arg)->messages_.end()) {
+      if (static_cast<Mqtt*>(arg)->messages_.find(topic) == static_cast<Mqtt*>(arg)->messages_.end()) {
+        static_cast<Mqtt*>(arg)->messages_.emplace(topic, std::deque<std::string>{message});
+      } else {
         static_cast<Mqtt*>(arg)->messages_[topic].push_back(message);
       }
       break;
