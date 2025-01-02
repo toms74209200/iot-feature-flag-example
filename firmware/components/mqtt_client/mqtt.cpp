@@ -15,7 +15,8 @@ void mqtt_client::Mqtt::Publish(const std::string_view topic, const std::string_
   if (!connected_) {
     return;
   }
-  esp_mqtt_client_publish(client_, std::string{topic}.c_str(), std::string{message}.c_str(), 0, 0, 0);
+  std::string msg = client_id_ + ":" + std::string{message};
+  esp_mqtt_client_publish(client_, std::string{topic}.c_str(), msg.c_str(), 0, 0, 0);
 }
 
 void mqtt_client::Mqtt::Subscribe(const std::string_view topic) noexcept {
@@ -66,6 +67,9 @@ void mqtt_client::Mqtt::OnEvent(void* arg, esp_event_base_t event_base, int32_t 
     case MQTT_EVENT_DATA: {
       std::string topic(event->topic, event->topic_len);
       std::string message(event->data, event->data_len);
+      if (message.find(static_cast<Mqtt*>(arg)->client_id_) != std::string::npos) {
+        break;
+      }
       if (static_cast<Mqtt*>(arg)->messages_.find(topic) == static_cast<Mqtt*>(arg)->messages_.end()) {
         static_cast<Mqtt*>(arg)->messages_.emplace(topic, std::deque<std::string>{message});
       } else {

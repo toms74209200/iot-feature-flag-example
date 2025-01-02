@@ -22,6 +22,7 @@ constexpr std::string_view kTag = "mqtt";
  */
 class Mqtt {
  public:
+  Mqtt(const std::string_view client_id) noexcept : client_id_(std::string{client_id}){};
   /**
    * @brief Connect to MQTT broker.
    * @param domain[in] Domain.
@@ -73,6 +74,7 @@ class Mqtt {
   static void OnEvent(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) noexcept;
 
   esp_mqtt_client_handle_t client_;
+  const std::string client_id_;
   bool connected_ = false;
   std::unordered_map<std::string, std::deque<std::string>> messages_;
 };

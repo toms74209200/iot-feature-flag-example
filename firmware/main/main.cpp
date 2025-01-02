@@ -8,7 +8,7 @@ constexpr std::string_view kMqttBrokerDomain = CONFIG_BROKER_DOMAIN;  ///< MQTT 
 constexpr int_fast32_t kMqttBrokerPort = CONFIG_BROKER_PORT;          ///< MQTT broker port. It is defined from sdkconfig.
 
 wifi_client::WifiClient wifi;
-mqtt_client::Mqtt mqtt;
+mqtt_client::Mqtt mqtt(wifi_client::WifiClient::GetMac());
 
 void setup() {
   wifi.ConnectWifi(kSsid, kPassword);

@@ -27,6 +27,14 @@ bool wifi_client::WifiClient::Connected() const noexcept {
   return ip.ip.addr != 0;
 }
 
+std::string wifi_client::WifiClient::GetMac() noexcept {
+  uint8_t mac[kMacSize];
+  esp_read_mac(mac, ESP_MAC_WIFI_STA);
+  char mac_str[kMacStrSize];
+  snprintf(mac_str, kMacStrSize, "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+  return std::string{mac_str};
+}
+
 void wifi_client::WifiClient::OnEventWifi(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
   if (event_base == WIFI_EVENT) {
     ESP_LOGI(kTag.data(), "WIFI_EVENT: %ld", event_id);
