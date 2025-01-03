@@ -34,10 +34,20 @@ struct Message {
  */
 struct GreeterMessage : public Message {
   GreeterMessage(const std::string& client_id, const std::string& name) : client_id(client_id), name(name){};
+  GreeterMessage(const GreeterMessage* message) : client_id(message->client_id), name(message->name){};
   const std::string client_id;
   const std::string name;
   std::string ToJson() const noexcept override {
-    return R"({"client_id":")" + client_id + R"(","name":")" + name + R"("})";
+    return "{\"" + std::string{kClientIdKey} + "\":\"" + client_id + "\",\"" + std::string{kNameKey} + "\":\"" + name + "\"}";
+  }
+};
+
+struct GreeterReplyMessage : public Message {
+  GreeterReplyMessage(const std::string& client_id, const std::string& message) : client_id(client_id), message(message){};
+  const std::string client_id;
+  const std::string message;
+  std::string ToJson() const noexcept override {
+    return "{\"" + std::string{kClientIdKey} + "\":\"" + client_id + "\",\"message\":\"" + message + "\"}";
   }
 };
 
@@ -59,7 +69,8 @@ struct FeatureMessage : public Message {
   const std::string client_id;
   const bool greeter_is_enabled = false;
   std::string ToJson() const noexcept override {
-    return R"({"client_id":")" + client_id + R"(","feature":{"greeter":)" + (greeter_is_enabled ? "true" : "false") + R"(}})";
+    return "{\"}" + std::string{kClientIdKey} + "\":\"" + client_id + "\",\"" + std::string{kFeatureKey} +
+           "\":{\"greeter\":" + (greeter_is_enabled ? "true" : "false") + "}}";
   }
 };
 
@@ -68,36 +79,6 @@ struct FeatureMessage : public Message {
  * @param message[in] Message.
  * @return Message.
  */
-std::unique_ptr<Message> MessageFrom(const std::string_view message) noexcept {
-  std::unique_ptr<cJSON, decltype(&cJSON_Delete)> root(cJSON_Parse(message.data()), cJSON_Delete);
-  if (root == nullptr) {
-    return nullptr;
-  }
-  cJSON* client_id_value = cJSON_GetObjectItem(root.get(), kClientIdKey.data());
-  if (message.find(kNameKey) != std::string::npos) {
-    cJSON* name_value = cJSON_GetObjectItem(root.get(), kNameKey.data());
-    if (name_value == nullptr || !cJSON_IsString(name_value)) {
-      return nullptr;
-    }
-    if (client_id_value == nullptr || !cJSON_IsString(client_id_value)) {
-      return std::make_unique<GreeterMessage>("", name_value->valuestring);
-    } else {
-      return std::make_unique<GreeterMessage>(client_id_value->valuestring, name_value->valuestring);
-    }
-  }
-  if (message.find(kFeatureKey) != std::string::npos) {
-    cJSON* feature_value = cJSON_GetObjectItem(root.get(), kFeatureKey.data());
-    if (feature_value == nullptr) {
-      return nullptr;
-    }
-    cJSON* greeter_is_enable_value = cJSON_GetObjectItem(feature_value, kGreeterKey.data());
-    if (client_id_value == nullptr || !cJSON_IsString(client_id_value)) {
-      return std::make_unique<FeatureMessage>("", greeter_is_enable_value->type == cJSON_True);
-    } else {
-      return std::make_unique<FeatureMessage>(client_id_value->valuestring, greeter_is_enable_value->type == cJSON_True);
-    }
-  }
-  return nullptr;
-}
+std::unique_ptr<Message> MessageFrom(const std::string_view msg) noexcept;
 
 }  // namespace message
