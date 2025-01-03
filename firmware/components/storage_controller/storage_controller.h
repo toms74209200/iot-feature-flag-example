@@ -4,14 +4,19 @@
  */
 #pragma once
 
+#include <optional>
 #include <string>
 #include <string_view>
 
+#include "esp_log.h"
 #include "nvs.h"
 #include "nvs_flash.h"
 #include "nvs_handle.hpp"
 
 namespace storage_controller {
+
+constexpr std::string_view kTag = "storage_controller";
+
 /**
  * @brief Storage.
  */
@@ -36,6 +41,19 @@ class StorageController {
    * @return Value.
    */
   std::string Read(const std::string_view key) noexcept;
+
+  /**
+   * @brief Write byte value.
+   * @param key[in] Key.
+   * @param value[in] Value.
+   */
+  void WriteByte(const std::string_view key, const uint8_t value) noexcept;
+  /**
+   * @brief Read byte value by key. If key does not exist, return 0.
+   * @param key[in] Key.
+   * @return Value. If key does not exist, return std::nullopt.
+   */
+  std::optional<uint8_t> ReadByte(const std::string_view key) noexcept;
 
  private:
   const std::string_view storage_namespace_;  ///< Storage namespace.
