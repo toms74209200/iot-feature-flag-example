@@ -15,8 +15,7 @@ void mqtt_client::Mqtt::Publish(const std::string_view topic, const std::string_
   if (!connected_) {
     return;
   }
-  std::string msg = client_id_ + ":" + std::string{message};
-  esp_mqtt_client_publish(client_, std::string{topic}.c_str(), msg.c_str(), 0, 0, 0);
+  esp_mqtt_client_publish(client_, std::string{topic}.c_str(), std::string{message}.c_str(), 0, 0, 0);
 }
 
 void mqtt_client::Mqtt::Subscribe(const std::string_view topic) noexcept {
