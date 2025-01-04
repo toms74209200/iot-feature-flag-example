@@ -66,6 +66,7 @@ struct GreeterReplyMessage : public Message {
 struct FeatureMessage : public Message {
   FeatureMessage(const std::string& client_id) : client_id(client_id){};
   FeatureMessage(const std::string& client_id, const bool greeter_is_enabled) : client_id(client_id), greeter_is_enabled(greeter_is_enabled){};
+  FeatureMessage(const FeatureMessage* message) : client_id(message->client_id), greeter_is_enabled(message->greeter_is_enabled){};
   const std::string client_id;
   const bool greeter_is_enabled = false;
   std::string ToJson() const noexcept override {
