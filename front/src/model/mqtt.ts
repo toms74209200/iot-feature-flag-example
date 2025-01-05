@@ -18,6 +18,10 @@ export const subscribeMqtt = (
   });
 };
 
+export const unsubscribeMqtt = (topic: string) => {
+  mqtt_client.unsubscribe(topic);
+};
+
 export const publishMqtt = (topic: string, message: string) => {
   mqtt_client.publish(topic, message);
 };

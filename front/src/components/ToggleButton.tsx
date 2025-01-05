@@ -1,12 +1,22 @@
+import { RefObject } from "react";
+
 interface ToggleButtonProps {
+  ref?: RefObject<HTMLInputElement> | null;
+  initialChecked?: boolean;
   onChange: (checked: boolean) => void;
 }
 
-export const ToggleButton = ({ onChange }: ToggleButtonProps) => {
+export const ToggleButton = ({
+  onChange,
+  ref = null,
+  initialChecked = false,
+}: ToggleButtonProps) => {
   return (
     <>
       <input
+        ref={ref}
         type="checkbox"
+        defaultChecked={initialChecked}
         className="sr-only peer"
         onChange={(e) => onChange(e.target.checked)}
       />
