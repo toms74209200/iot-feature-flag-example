@@ -1,4 +1,4 @@
-FROM debian:bullseye AS install-esp-idf
+FROM debian:bookworm AS install-esp-idf
 
 RUN apt-get update && apt-get -y install --no-install-recommends \
     git \
@@ -28,7 +28,7 @@ RUN mkdir -p /opt && cd /opt \
     && git submodule update --init --recursive \
     && ./install.sh ${TARGET_DEVICE}
 
-FROM mcr.microsoft.com/devcontainers/cpp:1-debian-11
+FROM mcr.microsoft.com/devcontainers/cpp:1-debian-12
 
 COPY --from=install-esp-idf /opt/esp-idf /opt/esp-idf
 COPY --from=install-esp-idf --chown=vscode /root/.espressif /home/vscode/.espressif
