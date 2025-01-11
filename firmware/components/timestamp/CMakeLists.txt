@@ -1,3 +1,4 @@
-idf_component_register(SRCS "timestamp_format.cpp"
+idf_component_register(SRCS "timestamp.cpp" "timestamp_format.cpp"
                        INCLUDE_DIRS "."
-                       REQUIRES)
+                       REQUIRES message
+                       mqtt_client)
