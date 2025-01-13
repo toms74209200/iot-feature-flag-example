@@ -1,0 +1,4 @@
+services:
+  front:
+    entrypoint: ["/bin/bash", "-c"]
+    command: ["sleep infinity"]

@@ -1,21 +1,19 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
+// README at: https://github.com/devcontainers/templates/tree/main/src/cpp
 {
-	"name": "Node.js",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"dockerFile": "Dockerfile",
-
-	"runArgs": [
-		"--network=mqtt-broker_default"
+	"name": "C++",
+	"dockerComposeFile": [
+		"../../docker-compose.yml",
+		// "docker-compose.yml"
 	],
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"esbenp.prettier-vscode",
-				"bradlc.vscode-tailwindcss"
-			]
-		}
+	"service": "firmware",
+	"runServices": ["front","mqtt-broker"],
+	"features": {
+		"ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/toms74209200/features/clang-tools:latest": {}
 	},
+
+	"workspaceFolder": "/workspaces/firmware",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -24,7 +22,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
+	// "postCreateCommand": "",
 
 	// Configure tool-specific properties.
 	// "customizations": {},

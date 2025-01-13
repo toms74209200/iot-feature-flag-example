@@ -1,20 +1,21 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/cpp
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
-	"name": "C++",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"args": { 
-			"ESP_IDF_VERSTION": "v5.3.2",
-			"TARGET_DEVICE": "esp32"
+	"name": "Node.js",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"dockerComposeFile": ["../../docker-compose.yml", "docker-compose.yml"],
+	"service": "front",
+	"runServices": ["mqtt-broker"],
+	"workspaceFolder": "/workspaces/front",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"bradlc.vscode-tailwindcss"
+			]
 		}
 	},
-	"features": {
-		"ghcr.io/devcontainers/features/python:1": {},
-		"ghcr.io/toms74209200/features/clang-tools:latest": {}
-	},
-
-	// "runArgs": ["--device=/dev/ttyUSB0:/dev/ttyUSB0"],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -23,7 +24,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "",
+	// "postCreateCommand": "yarn install",
 
 	// Configure tool-specific properties.
 	// "customizations": {},
