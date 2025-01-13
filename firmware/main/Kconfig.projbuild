@@ -14,6 +14,22 @@ menu "Wi-Fi Configuration"
 
 endmenu
 
+menu "NTP Configuration"
+
+    config NTP_SERVER_ADDRESS
+        string "NTP Server Address"
+        default "pool.ntp.org"
+        help
+            NTP server address to use for time synchronization.
+
+    config TIMEZONE
+        string "Timezone"
+        default "GMT"
+        help
+            Timezone to use for local time calculation. Timezone format should be in POSIX format.
+
+endmenu
+
 menu "MQTT Configuration"
 
     config BROKER_DOMAIN
