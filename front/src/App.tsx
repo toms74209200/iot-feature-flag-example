@@ -7,6 +7,7 @@ import {
 } from "./model/mqtt";
 import { ToggleButton } from "./components/ToggleButton";
 import { jsonToMessage, Message, messageToJson } from "./model/message";
+import { MessageCard } from "./components/MessageCard";
 
 const featureTopic = "feature";
 const greeterTopic = "greeter";
@@ -186,6 +187,7 @@ function App() {
               "h-64",
               "overflow-y-scroll",
               "[&::-webkit-scrollbar]:hidden",
+              "space-y-4",
             ].join(" ")}
             style={{ scrollbarWidth: "none" }}
           >
@@ -193,31 +195,15 @@ function App() {
               <li
                 key={index}
                 className={[
-                  "my-4",
                   "max-w-80",
                   "mx-auto",
-                  "p-4",
-                  "rounded-md",
                   greeting.clientId === clientId
                     ? "translate-x-2"
                     : "-translate-x-2",
                   greeting.clientId === clientId ? "bg-amber-50" : "bg-gray-50",
                 ].join(" ")}
               >
-                <div>
-                  <p className={["text-sm", "text-gray-600"].join(" ")}>
-                    {greeting.clientId}
-                  </p>
-                  <div
-                    className={["flex", "flex-row", "justify-end"].join(" ")}
-                  >
-                    {"name" in greeting ? (
-                      <p>{greeting.name}</p>
-                    ) : "message" in greeting ? (
-                      <p>{greeting.message}</p>
-                    ) : null}
-                  </div>
-                </div>
+                <MessageCard message={greeting} />
               </li>
             ))}
           </ul>
