@@ -4,7 +4,7 @@ timestamp::TimestampFormat timestamp::TimestampFormatFrom(const std::string_view
   if (format == "iso8601") {
     return TimestampFormat::kIso8601;
   } else if (format == "epoch") {
-    return TimestampFormat::kIso8601;
+    return TimestampFormat::kEpoch;
   }
   return TimestampFormat::kIso8601;
 }

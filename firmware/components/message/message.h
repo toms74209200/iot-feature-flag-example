@@ -36,8 +36,8 @@ struct Message {
  * @endcode
  */
 struct GreeterMessage : public Message {
-  GreeterMessage(const std::string& client_id, const std::string& name) : client_id(client_id), name(name){};
-  GreeterMessage(const GreeterMessage* message) : client_id(message->client_id), name(message->name){};
+  GreeterMessage(const std::string& client_id, const std::string& name) : client_id(client_id), name(name) {};
+  GreeterMessage(const GreeterMessage* message) : client_id(message->client_id), name(message->name) {};
   const std::string client_id;
   const std::string name;
   std::string ToJson() const noexcept override {
@@ -46,7 +46,7 @@ struct GreeterMessage : public Message {
 };
 
 struct GreeterReplyMessage : public Message {
-  GreeterReplyMessage(const std::string& client_id, const std::string& message) : client_id(client_id), message(message){};
+  GreeterReplyMessage(const std::string& client_id, const std::string& message) : client_id(client_id), message(message) {};
   const std::string client_id;
   const std::string message;
   std::string ToJson() const noexcept override {
@@ -64,7 +64,7 @@ struct GreeterReplyMessage : public Message {
  * @endcode
  */
 struct TimestampMessage : public Message {
-  TimestampMessage(const std::string& client_id) : client_id(client_id){};
+  TimestampMessage(const std::string& client_id) : client_id(client_id) {};
   const std::string client_id;
   std::string ToJson() const noexcept override {
     return "{\"" + std::string{kClientIdKey} + "\":\"" + client_id + "\"}";
@@ -82,7 +82,7 @@ struct TimestampMessage : public Message {
  * @endcode
  */
 struct TimestampReplyMessage : public Message {
-  TimestampReplyMessage(const std::string& client_id, const std::string& timestamp) : client_id(client_id), timestamp(timestamp){};
+  TimestampReplyMessage(const std::string& client_id, const std::string& timestamp) : client_id(client_id), timestamp(timestamp) {};
   const std::string client_id;
   const std::string timestamp;
   std::string ToJson() const noexcept override {
@@ -103,10 +103,11 @@ struct TimestampReplyMessage : public Message {
  * @endcode
  */
 struct FeatureMessage : public Message {
-  FeatureMessage(const std::string& client_id) : client_id(client_id){};
+  FeatureMessage(const std::string& client_id) : client_id(client_id) {};
   FeatureMessage(const std::string& client_id, const bool greeter_is_enabled, const timestamp::TimestampFormat timestamp_format)
-      : client_id(client_id), greeter_is_enabled(greeter_is_enabled), timestamp_format(timestamp_format){};
-  FeatureMessage(const FeatureMessage* message) : client_id(message->client_id), greeter_is_enabled(message->greeter_is_enabled){};
+      : client_id(client_id), greeter_is_enabled(greeter_is_enabled), timestamp_format(timestamp_format) {};
+  FeatureMessage(const FeatureMessage* message)
+      : client_id(message->client_id), greeter_is_enabled(message->greeter_is_enabled), timestamp_format(message->timestamp_format) {};
   const std::string client_id;
   const bool greeter_is_enabled = false;
   const timestamp::TimestampFormat timestamp_format = timestamp::TimestampFormat::kIso8601;

@@ -3,6 +3,7 @@
 void timestamp::Timestamp::Notify(const timestamp::TimestampFormat format) noexcept {
   if (!subscribed_) {
     mqtt_->Subscribe(topic_);
+    subscribed_ = true;
   }
   auto messages = mqtt_->PopMessages(topic_);
   if (messages.empty()) {
