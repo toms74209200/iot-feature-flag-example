@@ -1,6 +1,12 @@
 export type Message = {
   clientId: string;
-} & (GreeterMessage | GreeterReplyMessage | FeatureMessage);
+} & (
+  | GreeterMessage
+  | GreeterReplyMessage
+  | TimestampMessage
+  | TimestampReplyMessage
+  | FeatureMessage
+);
 
 export type GreeterMessage = {
   name: string;
@@ -10,9 +16,18 @@ export type GreeterReplyMessage = {
   message: string;
 };
 
+export type TimestampMessage = object;
+
+export type TimestampReplyMessage = {
+  timestamp: string;
+};
+
+export type TimestampFormat = "iso8601" | "epoch";
+
 type FeatureMessage = {
   feature: {
     greeter: boolean;
+    timestamp: TimestampFormat;
   };
 };
 
